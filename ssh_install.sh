@@ -42,7 +42,7 @@ else
 		#echo "-$initVIP-"
 		if [ "$initVIP" != "[VLAN" ]; then
 			echo "Running ssh_install on $board."
-			./ssh_install $initVIP $newVIP $newLIP $pw #>> ssh_install.log
+			./ssh_install $initVIP $newVIP $newLIP $pw >> ssh_install.log
 			sed -i "s/$initVIP/$newVIP/g" ipconfig.txt
 			echo "Install completed on $board."
 		fi
