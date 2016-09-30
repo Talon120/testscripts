@@ -13,5 +13,5 @@ cd iperf
 sudo ./configure
 sudo make
 sudo make install
-sudo apt-get install libz1 libbz2-1.0 libstdc++6
+echo "y" | sudo apt-get install libz1 libbz2-1.0 libstdc++6
 sudo ldconfig
