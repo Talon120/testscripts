@@ -1,0 +1,59 @@
+#!/usr/bin/expect -f
+
+# Program name:	ssh_install
+# Created by:	Talon Jones
+# Created:	10 Oct. 2016
+# Updated:	12 Oct. 2016
+# Purpose:	Expect script to ssh into [IP] and install iPerf and all dependent libraries.
+# Note:		iPerf directory will be cloned to board's home directory.
+# Usage:	./ssh_install [IP] [PW]
+
+set timeout -1
+set addr [lindex $argv 0]
+set pw [lindex $argv 1]
+set prompt "$"
+
+eval spawn ssh -o PubkeyAuthentication=no  $addr
+expect {
+	"(yes/no)" { send "yes\r"; exp_continue }
+	"password:"
+}
+send -- "$pw\r"
+
+#expect -ex $prompt
+#send -- "echo 'y' | sudo apt-get update\r"
+#expect -exact "password for"
+#send -- "$pw\r"
+#expect -ex $prompt
+#send -- "echo 'y' | sudo apt-get install git make expect\r"
+#expect -ex $prompt
+#send -- "git clone https://github.com/esnet/iperf\r"
+#expect -ex $prompt
+#send -- "cd iperf\r"
+#expect -ex $prompt
+#send -- "sudo ./configure\r"
+#expect -ex $prompt
+#send -- "sudo make\r"
+#expect -ex $prompt
+#send -- "sudo make install\r"
+#expect -ex $prompt
+#send -- "echo 'y' | sudo apt-get install libz1 libbz2-1.0 libstdc++6\r"
+#expect -ex $prompt
+#send -- "sudo ldconfig\r"
+
+expect -ex $prompt {
+
+send -- "conf=\$(grep 'wlan0' /etc/network/interfaces)\r"
+send -- "greprc=\$?\r"
+send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
+send -- "echo 'Not Found'\r"
+send -- "else\r"
+send -- "cat /etc/network/interfaces\r"
+send -- "fi\r"
+
+}
+sleep 1
+expect -ex $prompt
+#interact
+exit
+
