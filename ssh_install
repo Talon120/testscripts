@@ -12,6 +12,7 @@ set timeout -1
 set addr [lindex $argv 0]
 set pw [lindex $argv 1]
 set prompt "$"
+set defint "wlan0"
 
 eval spawn ssh -o PubkeyAuthentication=no  $addr
 expect {
@@ -20,10 +21,10 @@ expect {
 }
 send -- "$pw\r"
 
-#expect -ex $prompt
-#send -- "echo 'y' | sudo apt-get update\r"
-#expect -exact "password for"
-#send -- "$pw\r"
+expect -ex $prompt
+send -- "echo 'y' | sudo apt-get update\r"
+expect -exact "password for"
+send -- "$pw\r"
 #expect -ex $prompt
 #send -- "echo 'y' | sudo apt-get install git make expect\r"
 #expect -ex $prompt
@@ -43,15 +44,17 @@ send -- "$pw\r"
 
 expect -ex $prompt {
 
-send -- "conf=\$(grep 'wlan0' /etc/network/interfaces)\r"
+send -- "conf=\$(grep '$defint' /etc/network/interfaces)\r"
 send -- "greprc=\$?\r"
 send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
-send -- "echo 'Not Found'\r"
+send -- "echo \"\nauto $defint\niface $defint inet static\naddress $addr\nnetmask 255.255.255.0\" | sudo tee -a /etc/network/interfaces\r"
 send -- "else\r"
-send -- "cat /etc/network/interfaces\r"
+send -- "sudo sed -i '/address/c\\address $addr' /etc/network/interfaces\r"
 send -- "fi\r"
 
 }
+
+
 sleep 1
 expect -ex $prompt
 #interact
