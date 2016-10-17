@@ -25,22 +25,22 @@ expect -ex $prompt
 send -- "echo 'y' | sudo apt-get update\r"
 expect -exact "password for"
 send -- "$pw\r"
-#expect -ex $prompt
-#send -- "echo 'y' | sudo apt-get install git make expect\r"
-#expect -ex $prompt
-#send -- "git clone https://github.com/esnet/iperf\r"
-#expect -ex $prompt
-#send -- "cd iperf\r"
-#expect -ex $prompt
-#send -- "sudo ./configure\r"
-#expect -ex $prompt
-#send -- "sudo make\r"
-#expect -ex $prompt
-#send -- "sudo make install\r"
-#expect -ex $prompt
-#send -- "echo 'y' | sudo apt-get install libz1 libbz2-1.0 libstdc++6\r"
-#expect -ex $prompt
-#send -- "sudo ldconfig\r"
+expect -ex $prompt
+send -- "echo 'y' | sudo apt-get install git make expect\r"
+expect -ex $prompt
+send -- "git clone https://github.com/esnet/iperf\r"
+expect -ex $prompt
+send -- "cd iperf\r"
+expect -ex $prompt
+send -- "sudo ./configure\r"
+expect -ex $prompt
+send -- "sudo make\r"
+expect -ex $prompt
+send -- "sudo make install\r"
+expect -ex $prompt
+send -- "echo 'y' | sudo apt-get install libz1 libbz2-1.0 libstdc++6\r"
+expect -ex $prompt
+send -- "sudo ldconfig\r"
 
 expect -ex $prompt {
 
