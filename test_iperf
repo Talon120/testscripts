@@ -1,0 +1,40 @@
+#!/usr/bin/expect -f
+
+# Program name: ssh_install
+# Created by:   Talon Jones
+# Created:      17 Oct. 2016
+# Updated:      18 Oct. 2016
+# Purpose:      Expect script to ssh into [IP]s and initiate selected iPerf test.
+# Usage:        ./test_iperf [IPclient] [IPserver] [PW] [Test]
+
+set timeout -1
+set addrC [lindex $argv 0]
+set addrS [lindex $argv 1]
+set pw [lindex $argv 2]
+set test [lindex $argv 3]
+set prompt "$"
+
+eval spawn ssh -o PubkeyAuthentication=no  $addrS
+expect {
+        "(yes/no)" { send "yes\r"; exp_continue }
+        "password:"
+}
+send -- "$pw\r"
+
+expect -ex $prompt
+send -- "iperf3 -p 3344 -s\r"
+
+sleep 1
+expect -ex $prompt
+#interact
+exit
+
+eval spawn ssh -o PubkeyAuthentication=no $addrC
+expect {
+	"(yes/no)" { send "yes\r"; exp_continue}
+	"password:"
+}
+send -- "$pw\r"
+
+expect -ex $prompt
+interact
