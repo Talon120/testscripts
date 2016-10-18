@@ -1,6 +1,6 @@
 #!/usr/bin/expect -f
 
-# Program name: ssh_install
+# Program name: test_iperf
 # Created by:   Talon Jones
 # Created:      17 Oct. 2016
 # Updated:      18 Oct. 2016
@@ -14,7 +14,7 @@ set pw [lindex $argv 2]
 set test [lindex $argv 3]
 set prompt "$"
 
-eval spawn ssh -o PubkeyAuthentication=no  $addrS
+eval spawn ssh -o PubkeyAuthentication=no $addrS
 expect {
         "(yes/no)" { send "yes\r"; exp_continue }
         "password:"
@@ -22,12 +22,19 @@ expect {
 send -- "$pw\r"
 
 expect -ex $prompt
-send -- "iperf3 -p 3344 -s\r"
+send -- "kill \$(ps -aux | grep -m 1 \"iperf3\" \| awk \'\{printf \$2\}\')\r"
+sleep 1
+expect -ex $prompt
+send -- "nohup iperf3 -p 3344 -s &\r"
+expect -ex $prompt
+send -- "disown\r"
 
 sleep 1
 expect -ex $prompt
 #interact
-exit
+send -- "logout\r"
+
+sleep 2
 
 eval spawn ssh -o PubkeyAuthentication=no $addrC
 expect {
