@@ -12,7 +12,7 @@ set timeout -1
 set addr [lindex $argv 0]
 set pw [lindex $argv 1]
 set prompt "$"
-set defint "wlan0"
+set defint "eth0"
 
 eval spawn ssh -o PubkeyAuthentication=no  $addr
 expect {
