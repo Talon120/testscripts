@@ -3,7 +3,7 @@
 # Program name: test_iperf
 # Created by:   Talon Jones
 # Created:      17 Oct. 2016
-# Updated:      18 Oct. 2016
+# Updated:      24 Oct. 2016
 # Purpose:      Expect script to ssh into [IP]s and initiate selected iPerf test.
 # Usage:        ./test_iperf [IPclient] [IPserver] [PW] [Test] [Duration]
 
@@ -16,14 +16,23 @@ set dur [lindex $argv 4]
 set prompt "$"
 
 if {$test == "1"} {
-	set test "iperf3 -c $addrS -u -t $dur"
-	puts "$test\n"
+	set test "iperf3 -c $addrS -p 3344 -V -u -t $dur --logfile log_test1"
+	puts "1s UDP tests for $dur seconds. Log file: log_test1"
 } elseif {$test == "2"} {
-	set test "iperf3 -c $addrS -t $dur"
-	puts "2\n"
+	set test "iperf3 -c $addrS -p 3344 -V -t $dur --logfile log_test2"
+	puts "1s TCP tests for $dur seconds. Log file: log_test2"
 } elseif {$test == "3"} {
-	puts "3\n"
+	set test "iperf3 -c $addrS -p 3344 -V -t $dur -i 10 --logfile log_test3"
+	puts "Periodic TCP tests every 10s for $dur seconds. Log file: log_test3"
+} else {
+	puts "-----No/invalid test specified. Exiting now.-----\n"
+	exit
 }
+puts "$test\n"
+
+#
+# Begin Server Commands
+#
 
 eval spawn ssh -o PubkeyAuthentication=no $addrS
 expect {
@@ -45,6 +54,9 @@ expect -ex $prompt
 #interact
 send -- "logout\r"
 
+#
+# Begin Client Commands
+#
 sleep 2
 
 eval spawn ssh -o PubkeyAuthentication=no $addrC
@@ -55,4 +67,11 @@ expect {
 send -- "$pw\r"
 
 expect -ex $prompt
-interact
+send -- "$test &\r"
+expect -ex $prompt
+send -- "disown\r"
+
+sleep 1
+expect -ex $prompt
+#interact
+send -- "logout\r"
