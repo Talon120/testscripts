@@ -5,14 +5,25 @@
 # Created:      17 Oct. 2016
 # Updated:      18 Oct. 2016
 # Purpose:      Expect script to ssh into [IP]s and initiate selected iPerf test.
-# Usage:        ./test_iperf [IPclient] [IPserver] [PW] [Test]
+# Usage:        ./test_iperf [IPclient] [IPserver] [PW] [Test] [Duration]
 
 set timeout -1
 set addrC [lindex $argv 0]
 set addrS [lindex $argv 1]
 set pw [lindex $argv 2]
 set test [lindex $argv 3]
+set dur [lindex $argv 4]
 set prompt "$"
+
+if {$test == "1"} {
+	set test "iperf3 -c $addrS -u -t $dur"
+	puts "$test\n"
+} elseif {$test == "2"} {
+	set test "iperf3 -c $addrS -t $dur"
+	puts "2\n"
+} elseif {$test == "3"} {
+	puts "3\n"
+}
 
 eval spawn ssh -o PubkeyAuthentication=no $addrS
 expect {
