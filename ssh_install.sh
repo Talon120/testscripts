@@ -5,20 +5,32 @@
 # Created:	12 Oct. 2016
 # Updated:	25 Oct. 2016
 # Purpose:	Automate ssh_install for every board/IP listed in [filename].
-# Usage:	./ssh_install.sh
+# Usage:	./ssh_install.sh {board}
 
 filename="ipconfig.txt"
 
 echo "Enter device password:"
-read pw
+read -s pw
 
-readarray -t boardIP < $filename
+board=$1
 
-#boardIP=$(awk '{printf $2}' $filename)
+if [ -n "$board" ]; then
+	boardIP=$(grep -w $board $filename | awk '{printf $3}')
+	if [ -n "$boardIP" ]; then
+		./ssh_install $boardIP $pw
+	else
+		echo "$board not found in $filename."
+	fi
 
-for e in "${boardIP[@]}"
-do
-	e=$(echo "$e" | awk '{printf $3}')
-	echo "$e"
-	./ssh_install $e $pw
-done
+else
+	readarray -t boardIP < $filename
+
+	#boardIP=$(awk '{printf $2}' $filename)
+
+	for e in "${boardIP[@]}"
+	do
+		e=$(echo "$e" | awk '{printf $3}')
+		echo "$e"
+		./ssh_install $e $pw
+	done
+fi
