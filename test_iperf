@@ -3,7 +3,7 @@
 # Program name: test_iperf
 # Created by:   Talon Jones
 # Created:      17 Oct. 2016
-# Updated:      24 Oct. 2016
+# Updated:      25 Oct. 2016
 # Purpose:      Expect script to ssh into [IP]s and initiate selected iPerf test.
 # Usage:        ./test_iperf [IPclient] [IPserver] [PW] [Test] [Duration]
 

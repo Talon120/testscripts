@@ -3,7 +3,7 @@
 # Program name:	ssh_install
 # Created by:	Talon Jones
 # Created:	10 Oct. 2016
-# Updated:	12 Oct. 2016
+# Updated:	25 Oct. 2016
 # Purpose:	Expect script to ssh into [IP] and install iPerf and all dependent libraries.
 # Note:		iPerf directory will be cloned to board's home directory.
 # Usage:	./ssh_install [IP] [PW]
@@ -43,18 +43,15 @@ expect -ex $prompt
 send -- "sudo ldconfig\r"
 
 expect -ex $prompt {
-
-send -- "conf=\$(grep '$defint' /etc/network/interfaces)\r"
-send -- "greprc=\$?\r"
-send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
-send -- "gw=$addr\r"
-send -- "echo \"\nauto $defint\niface $defint inet static\naddress $addr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.1\" | sudo tee -a /etc/network/interfaces\r"
-send -- "else\r"
-send -- "sudo sed -i '/address/c\\address $addr' /etc/network/interfaces\r"
-send -- "fi\r"
-
+	send -- "conf=\$(grep '$defint' /etc/network/interfaces)\r"
+	send -- "greprc=\$?\r"
+	send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
+	send -- "gw=$addr\r"
+	send -- "echo \"\nauto $defint\niface $defint inet static\naddress $addr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.1\" | sudo tee -a /etc/network/interfaces\r"
+	send -- "else\r"
+	send -- "sudo sed -i '/address/c\\address $addr' /etc/network/interfaces\r"
+	send -- "fi\r"
 }
-
 
 sleep 1
 expect -ex $prompt
