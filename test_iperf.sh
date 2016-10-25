@@ -3,9 +3,21 @@
 # Program name:	test_iperf.sh
 # Created by:	Talon Jones
 # Created:	6 Oct. 2016
-# Updated:	18 Oct. 2016
+# Updated:	25 Oct. 2016
 # Purpose:	Automate the ssh connection and iperf testing between test
 #		devices.
+
+function work() {
+	while : ; do
+		sleep 1s
+		echo -n " ."
+	done
+}
+
+function killwork() {
+	kill -9 ${1} 2>/dev/null
+	wait ${1} 2>/dev/null
+}
 
 filename="ipconfig.txt"
 board="Odroid"
@@ -14,31 +26,36 @@ echo "Enter client board #: "
 read boardC
 echo "Enter server board #: "
 read boardS
+echo "Enter password: [Note: password needs to be the same for both boards]"
+read pw
 
 boardC="$board$boardC"
 boardS="$board$boardS"
 
-echo "Client board lookup: $boardC"
-echo "Server board lookup: $boardS"
+echo -e "\nClient board lookup: $boardC     Server board lookup: $boardS"
 
-boardCip=$(grep -w $boardC $filename | awk '{printf $2}')
-boardSip=$(grep -w $boardS $filename | awk '{printf $2}')
+boardCIP1=$(grep -w $boardC $filename | awk '{printf $2}')
+boardSIP1=$(grep -w $boardS $filename | awk '{printf $2}')
+boardCIP2=$(grep -w $boardC $filename | awk '{printf $3}')
+boardSIP2=$(grep -w $boardS $filename | awk '{printf $3}')
 
-echo "Client board IP: $boardCip"
-echo "Server board IP: $boardSip"
+echo -e "Client board Internal IP: $boardCIP1     VLAN IP: $boardCIP2"
+echo -e "Server board Internal IP: $boardSIP1     VLAN IP: $boardSIP2"
 
-echo ""
-echo "Select a test to run:
+echo -e "\nSelect a test to run:
 1) UDP test
-2) TCP test"
-read optnum
+2) TCP test
+3) TCP periodic test"
+read optNum
 
-echo "Enter test duration: [min]"
-read testlength
-testlength=$(($testlength * 60))
+echo -e "\nEnter test duration: [min]"
+read testLength
+testLength=$(($testLength * 60))
 
-set timeout -1
-ssh -o PubkeyAuthentication=no host.example.com
-expect -exact "password: "
-send -- "odroid\r"
-expect {\$\s*} {interact}
+./test_iperf $boardCIP1 $boardSIP1 $pw $optNum $testLength
+echo ""
+work &
+work_pid=$!
+trap 'killwork ${work_pid}; exit' INT TERM EXIT
+sleep $testLength
+killwork ${work_pid}
