@@ -3,7 +3,7 @@
 # Program name: test_iperf
 # Created by:   Talon Jones
 # Created:      17 Oct. 2016
-# Updated:      25 Oct. 2016
+# Updated:      26 Oct. 2016
 # Purpose:      Expect script to ssh into [IP]s and initiate selected iPerf test.
 # Usage:        ./test_iperf [IPclient] [IPserver] [PW] [Test] [Duration]
 
@@ -41,13 +41,34 @@ expect {
 }
 send -- "$pw\r"
 
-expect -ex $prompt
-send -- "kill \$(ps -aux | grep -m 1 \"iperf3\" \| awk \'\{printf \$2\}\')\r"
-sleep 1
-expect -ex $prompt
-send -- "nohup iperf3 -p 3344 -s &\r"
-expect -ex $prompt
-send -- "disown\r"
+expect -ex $prompt {
+	send -- "ps -aux | grep 'iperf3' | grep -v 'grep'\r"
+	send -- "greprc=\$?\r"
+	send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
+
+	send -- "echo 'Starting up Iperf server.'\r"
+	send -- "nohup iperf3 -p 3344 -s &\r"
+	sleep 1
+	send -- "disown\r"
+
+	send -- "else\r"
+
+	send -- "ls | grep 'nohup.out'\r"
+	send -- "greprc=\$?\r"
+	send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
+
+	send -- "echo 'Iperf server logfile not found. Restarting server.'\r"
+	send -- "kill \$(ps -aux | grep 'iperf3' | grep -v 'grep' | awk '\{printf \$2\}')\r"
+	send -- "nohup iperf3 -p 3344 -s &\r"
+	sleep 1
+	send -- "disown\r"
+
+	send -- "else\r"
+	send -- "echo 'Iperf server already running and logfile found.'\r"
+	send -- "fi\r"
+
+	send -- "fi\r"
+}
 
 sleep 1
 expect -ex $prompt
