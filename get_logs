@@ -1,0 +1,23 @@
+#!/usr/bin/expect -f
+
+# Program name:	get_logs
+# Created by:	Talon Jones
+# Created:	27 Oct. 2016
+# Updated:	28 Oct. 2016
+# Purpose:	Retrieve any iperf log files from boards listed in ipconfig.txt.
+# Usage:	./get_logs [IP] [PW]
+
+set timeout -1
+set addr [lindex $argv 0]
+set pw [lindex 1]
+set prompt "$"
+
+eval spawn ssh -o PubkeyAuthentication=no $addr
+expect {
+	"(yes/no)" { send "yes\r"; exp_continue }
+	"password:" { send -- "$pw\r" }
+}
+
+expect -ex $prompt {
+
+}
