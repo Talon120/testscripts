@@ -29,8 +29,9 @@ else
 
 	for e in "${boardIP[@]}"
 	do
-		e=$(echo "$e" | awk '{printf $3}')
+		e=$(echo "$e" | awk '{printf $4}')
 		echo "$e"
-		./ssh_install $e $pw
+		f=$(echo "$f" | awk '{printf $3}')
+		./ssh_install $e $f $pw
 	done
 fi
