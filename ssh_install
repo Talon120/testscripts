@@ -14,7 +14,7 @@ set pw [lindex $argv 1]
 set prompt "$"
 set defint "eth0"
 
-eval spawn ssh -o PubkeyAuthentication=no  $addr
+eval spawn ssh -o PubkeyAuthentication=no odroid@$addr
 expect {
 	"(yes/no)" { send "yes\r"; exp_continue }
 	"password:"
