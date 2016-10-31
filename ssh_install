@@ -48,7 +48,7 @@ expect -ex $prompt {
 	send -- "greprc=\$?\r"
 	send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
 	send -- "gw=$naddr\r"
-	send -- "echo \"\nauto $defint\niface $defint inet static\naddress $addr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.1\" | sudo tee -a /etc/network/interfaces\r"
+	send -- "echo \"\nauto $defint\niface $defint inet static\naddress $naddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.1\" | sudo tee -a /etc/network/interfaces\r"
 	send -- "else\r"
 	send -- "sudo sed -i '/address/c\\address $naddr' /etc/network/interfaces\r"
 	send -- "fi\r"
@@ -57,7 +57,7 @@ expect -ex $prompt {
 sleep 1
 expect -ex $prompt
 send -- "sudo reboot\r"
-sleep1
+sleep 1
 #interact
 exit
 
