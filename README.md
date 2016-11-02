@@ -9,8 +9,14 @@ Testscripts repository is for scripts used to automate network testing and tool 
 	The WAN IP will be used to remotely SSH into the boards to execute scripts, and the LAN IP
 	will be used for iperf testing to automatically connect two boards on the same LAN.
 	Format will be:
-		[Board Name#] [LAN IP] [WAN IP]
-	E.g.:	Odroid1 192.168.1.5 10.10.10.24
+		[Board] [Internal IP] [VLAN IP] [INIT IP]
+	E.g.:	Odroid1 192.168.1.5 10.10.10.24 10.10.10.4
+	Internal IP:	The IP address that will be used for iperf sessions.
+	VLAN IP:	The IP address that will be used for SSH connections from the central
+			server.
+	INIT IP:	The IP address that is currently assigned for SSH connections from the
+			central	server. This will be updated to [VLAN IP] after running
+			ssh_install.sh (SOON).
 
 ##ssh_install.sh {board}
 	This file will remotely install iperf tools and all dependent libraries. Running this
@@ -18,7 +24,7 @@ Testscripts repository is for scripts used to automate network testing and tool 
 	ipconfig.txt file. Specifying a {board} will cause the script to run only on that one
 	board, if found, using the IP addresses given to it in ipconfig.txt.
 
-##ssh_intall [IP] [PW]
+##ssh_intall [IP] [NEW VLANIP] [NEW LANIP] [PW]
 	This expect script will be run by ssh_install.sh for the [IP] given, and will use the
 	given [PW] to authorize any SSH/sudo commands. This script will only be used by the
 	ssh_install.sh script, and does not need to be run manually.
