@@ -3,7 +3,7 @@
 # Program name:	ssh_install.sh
 # Created by:	Talon Jones
 # Created:	12 Oct. 2016
-# Updated:	25 Oct. 2016
+# Updated:	2 Nov. 2016
 # Purpose:	Automate ssh_install for every board/IP listed in [filename].
 # Usage:	./ssh_install.sh {board}
 
@@ -29,9 +29,10 @@ else
 
 	for e in "${boardIP[@]}"
 	do
-		initIP=$(echo "$e" | awk '{printf $4}')
-		newIP=$(echo "$e" | awk '{printf $3}')
-		echo "$initIP"
-		./ssh_install $initIP $newIP $pw
+		initVIP=$(echo "$e" | awk '{printf $4}')
+		newVIP=$(echo "$e" | awk '{printf $3}')
+		newLIP=$(echo "$e" | awk '{printf $2}')
+		echo "$initVIP"
+		./ssh_install $initVIP $newVIP $newLIP $pw
 	done
 fi
