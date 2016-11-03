@@ -46,7 +46,7 @@ expect -ex $prompt
 send -- "sudo ldconfig\r"
 
 expect -ex $prompt {
-	send -- "usbn=\$(ifconfig | grep ^$usbnet | awk '{printf $1}')\r"
+	send -- "usbn=\$(ifconfig | grep ^$usbnet | awk '{printf \$1}')\r"
 	send -- "if \[\[ \$usbn -ne \"\" \]\]; then\r"
 		send -- "conf=\$(grep '\$usbn' /etc/network/interfaces)\r"
 		send -- "greprc=\$?\r"
