@@ -16,6 +16,8 @@ set pw [lindex $argv 3]
 set prompt "$"
 set ethnet "eth0"
 set usbnet "enx"
+set lanGW "254"
+set vlanGW "1"
 
 eval spawn ssh -o PubkeyAuthentication=no odroid@$addr
 expect {
@@ -52,9 +54,9 @@ expect -ex $prompt {
 		send -- "greprc=\$?\r"
 		send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
 			send -- "gw=$vaddr\r"
-			send -- "echo \"\nauto \$usbn\niface \$usbn inet static\naddress $vaddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.1\" | sudo tee -a /etc/network/interfaces\r"
+			send -- "echo \"\nauto \$usbn\niface \$usbn inet static\naddress $vaddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.$vlanGW\" | sudo tee -a /etc/network/interfaces\r"
 		send -- "else\r"
-			send -- "sudo sed -i '/address/c\\address $vaddr' /etc/network/interfaces\r"
+			send -- "sudo sed '/iface \$usbn inet static/!b;n;caddress $vaddr' /etc/network/interfaces\r"
 		send -- "fi\r"
 	send -- "fi\r"
 
@@ -62,9 +64,9 @@ expect -ex $prompt {
 	send -- "greprc=\$?\r"
 	send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
 		send -- "gw=$laddr\r"
-		send -- "echo \"\nauto $ethnet\niface $ethnet inet static\naddress $laddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.1\" | sudo tee -a /etc/network/interfaces\r"
+		send -- "echo \"\nauto $ethnet\niface $ethnet inet static\naddress $laddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.$lanGW\" | sudo tee -a /etc/network/interfaces\r"
 	send -- "else\r"
-		send -- "sudo sed -i '/address/c\\address $laddr' /etc/network/interfaces\r"
+		send -- "sudo sed '/iface $ethnet inet static/!b;n;caddress $laddr' /etc/network/interfaces\r"
 	send -- "fi\r"
 }
 
