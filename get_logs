@@ -2,22 +2,31 @@
 
 # Program name:	get_logs
 # Created by:	Talon Jones
-# Created:	27 Oct. 2016
-# Updated:	28 Oct. 2016
+# Created:	29 Oct. 2016
+# Updated:	9 Nov. 2016
 # Purpose:	Retrieve any iperf log files from boards listed in ipconfig.txt.
-# Usage:	./get_logs [IP] [PW]
+# Usage:	./get_logs [IP] [PW] [Name] [Path]
 
 set timeout -1
 set addr [lindex $argv 0]
-set pw [lindex 1]
+set pw [lindex $argv 1]
+set board [lindex $argv 2]
+set logpath [lindex $argv 3]
 set prompt "$"
+set log1 "log_test1"
+set log2 "log_test2"
+set log3 "log_test3"
+set slog "nohup.out"
 
-eval spawn ssh -o PubkeyAuthentication=no $addr
+
+eval spawn scp odroid@$addr:$log1 $logpath/$log1/"$board-log1"
 expect {
 	"(yes/no)" { send "yes\r"; exp_continue }
 	"password:" { send -- "$pw\r" }
 }
 
-expect -ex $prompt {
+sleep 5
 
+expect -ex $prompt {
+	exit
 }
