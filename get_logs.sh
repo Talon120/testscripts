@@ -3,7 +3,7 @@
 # Program name:	get_logs.sh
 # Created by:	Talon Jones
 # Created:	3 Nov. 2016
-# Updated:	9 Nov. 2016
+# Updated:	10 Nov. 2016
 # Purpose:	Retrieve any iperf log files from boards listed in ipconfig.txt.
 # Usage:	./get_logs.sh {board}
 
