@@ -18,7 +18,9 @@ if [ -n "$board" ]; then
 	e=$(grep -w $board $filename)
 	initVIP=$(echo "$e" | awk '{printf $4}')
 	if [ -n "$initVIP" ]; then
-		mkdir -p $mkdate
+		mkdir -p $mkdate/log_test1/logs/
+        	mkdir -p $mkdate/log_test2/logs/
+	        mkdir -p $mkdate/log_test3/logs/
 		echo "Running get_logs on $board."
 		./get_logs $initVIP $pw $board $mkdate
 		echo "Retrieved logs from $board."
@@ -28,7 +30,9 @@ if [ -n "$board" ]; then
 
 else
 	readarray -t boardIP < $filename
-	mkdir -p $mkdate
+	mkdir -p $mkdate/log_test1/logs/
+	mkdir -p $mkdate/log_test2/logs/
+	mkdir -p $mkdate/log_test3/logs/
 
 	for e in "${boardIP[@]}"
 	do
@@ -41,3 +45,4 @@ else
 		fi
 	done
 fi
+

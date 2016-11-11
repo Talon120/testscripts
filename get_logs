@@ -19,10 +19,22 @@ set log3 "log_test3"
 set slog "nohup.out"
 
 
-eval spawn scp odroid@$addr:$log1 $logpath/$log1/"$board-log1"
+eval spawn scp odroid@$addr:$log1 $logpath/$log1/logs/$board-log1
 expect {
 	"(yes/no)" { send "yes\r"; exp_continue }
 	"password:" { send -- "$pw\r" }
+}
+
+eval spawn scp odroid@$addr:$log2 $logpath/$log2/logs/$board-log2 
+expect {
+        "(yes/no)" { send "yes\r"; exp_continue }
+        "password:" { send -- "$pw\r" }
+}
+
+eval spawn scp odroid@$addr:$log3 $logpath/$log3/logs/$board-log3 
+expect {
+        "(yes/no)" { send "yes\r"; exp_continue }
+        "password:" { send -- "$pw\r" }
 }
 
 sleep 5
