@@ -3,7 +3,7 @@
 # Program name:	get_logs
 # Created by:	Talon Jones
 # Created:	29 Oct. 2016
-# Updated:	10 Nov. 2016
+# Updated:	11 Nov. 2016
 # Purpose:	Retrieve any iperf log files from boards listed in ipconfig.txt.
 # Usage:	./get_logs [IP] [PW] [Name] [Path]
 
@@ -19,19 +19,19 @@ set log3 "log_test3"
 set slog "nohup.out"
 
 
-eval spawn scp odroid@$addr:$log1 $logpath/$log1/logs/$board-log1
+eval spawn scp odroid@$addr:$log1 $logpath/$log1/$board-log1
 expect {
 	"(yes/no)" { send "yes\r"; exp_continue }
 	"password:" { send -- "$pw\r" }
 }
 
-eval spawn scp odroid@$addr:$log2 $logpath/$log2/logs/$board-log2 
+eval spawn scp odroid@$addr:$log2 $logpath/$log2/$board-log2 
 expect {
         "(yes/no)" { send "yes\r"; exp_continue }
         "password:" { send -- "$pw\r" }
 }
 
-eval spawn scp odroid@$addr:$log3 $logpath/$log3/logs/$board-log3 
+eval spawn scp odroid@$addr:$log3 $logpath/$log3/$board-log3 
 expect {
         "(yes/no)" { send "yes\r"; exp_continue }
         "password:" { send -- "$pw\r" }
