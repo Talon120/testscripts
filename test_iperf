@@ -3,9 +3,9 @@
 # Program name: test_iperf
 # Created by:   Talon Jones
 # Created:      17 Oct. 2016
-# Updated:      26 Oct. 2016
+# Updated:      14 Nov. 2016
 # Purpose:      Expect script to ssh into [IP]s and initiate selected iPerf test.
-# Usage:        ./test_iperf [IPclient] [IPserver] [PW] [Test] [Duration]
+# Usage:        ./test_iperf [LANclient] [LANserver] [PW] [Test] [Duration] [VLANclient] [VLANserver]
 
 set timeout -1
 set addrC [lindex $argv 0]
@@ -13,6 +13,8 @@ set addrS [lindex $argv 1]
 set pw [lindex $argv 2]
 set test [lindex $argv 3]
 set dur [lindex $argv 4]
+set vaddrC [lindex $argv 5]
+set vaddrS [lindex $argv 6]
 set prompt "$"
 
 if {$test == "1"} {
@@ -34,7 +36,7 @@ puts "$test\n"
 # Begin Server Commands
 #
 
-eval spawn ssh -o PubkeyAuthentication=no $addrS
+eval spawn ssh -o PubkeyAuthentication=no $vaddrS
 expect {
         "(yes/no)" { send "yes\r"; exp_continue }
         "password:"
@@ -80,7 +82,7 @@ sleep 2
 # Begin Client Commands
 #
 
-eval spawn ssh -o PubkeyAuthentication=no $addrC
+eval spawn ssh -o PubkeyAuthentication=no $vaddrC
 expect {
 	"(yes/no)" { send "yes\r"; exp_continue}
 	"password:"

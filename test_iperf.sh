@@ -3,7 +3,7 @@
 # Program name:	test_iperf.sh
 # Created by:	Talon Jones
 # Created:	6 Oct. 2016
-# Updated:	25 Oct. 2016
+# Updated:	14 Nov. 2016
 # Purpose:	Automate the ssh connection and iperf testing between test
 #		devices.
 
@@ -34,13 +34,13 @@ boardS="$board$boardS"
 
 echo -e "\nClient board lookup: $boardC     Server board lookup: $boardS"
 
-boardCIP1=$(grep -w $boardC $filename | awk '{printf $2}')
-boardSIP1=$(grep -w $boardS $filename | awk '{printf $2}')
-boardCIP2=$(grep -w $boardC $filename | awk '{printf $3}')
-boardSIP2=$(grep -w $boardS $filename | awk '{printf $3}')
+boardCLanIP=$(grep -w $boardC $filename | awk '{printf $2}')
+boardSLanIP=$(grep -w $boardS $filename | awk '{printf $2}')
+boardCVlanIP=$(grep -w $boardC $filename | awk '{printf $3}')
+boardSVlanIP=$(grep -w $boardS $filename | awk '{printf $3}')
 
-echo -e "Client board Internal IP: $boardCIP1     VLAN IP: $boardCIP2"
-echo -e "Server board Internal IP: $boardSIP1     VLAN IP: $boardSIP2"
+echo -e "Client board Internal IP: $boardCLanIP     VLAN IP: $boardCVlanIP"
+echo -e "Server board Internal IP: $boardSLanIP     VLAN IP: $boardSVlanIP"
 
 echo -e "\nSelect a test to run:
 1) UDP test
@@ -52,7 +52,7 @@ echo -e "\nEnter test duration: [min]"
 read testLength
 testLength=$(($testLength * 60))
 
-./test_iperf $boardCIP1 $boardSIP1 $pw $optNum $testLength
+./test_iperf $boardCLanIP $boardSLanIP $pw $optNum $testLength $boardCVlanIP $boardSVlanIP
 echo ""
 work &
 work_pid=$!
