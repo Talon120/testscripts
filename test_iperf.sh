@@ -53,9 +53,9 @@ read testLength
 testLength=$(($testLength * 60))
 
 ./test_iperf $boardCLanIP $boardSLanIP $pw $optNum $testLength $boardCVlanIP $boardSVlanIP
-echo ""
-work &
-work_pid=$!
-trap 'killwork ${work_pid}; exit' INT TERM EXIT
-sleep $testLength
-killwork ${work_pid}
+echo "Running test $optNum on boards: $boardC and $boardS."
+#work &
+#work_pid=$!
+#trap 'killwork ${work_pid}; exit' INT TERM EXIT
+#sleep $testLength
+#killwork ${work_pid}
