@@ -53,7 +53,7 @@ Testscripts repository is for scripts used to automate network testing and tool 
 		do 1 second bandwidth checks every 10 seconds using TCP and track the window
 		needed to receive the entire packet. Logs will be kept in log_test3.
 
-##test_iperf [IPclient] [IP server] [PW] [Test#] [Duration]
+##test_iperf [LAN IP client] [LAN IP server] [PW] [Test#] [Duration] [VLAN IP client] [VLAN IP server]
 	This expect script will be run by test_iperf.sh using the arguments given by user input.
 	It will SSH into each of the two boards and run the following process:
 	Server:

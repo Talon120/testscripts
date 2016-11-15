@@ -10,16 +10,22 @@
 filename="ipconfig.txt"
 board=$1
 mkdate=$(date +"%F_%H")
+logBreak="- - - - - - - - - - - - - - - - - - - - - - - - -"
+logEnd="iperf Done."
+logErr="iperf3: error"
 
 logParse() {
-	cd $mkdate
-	for logFolders in .
+	for logFolders in $mkdate/*
 	do
-		for logFiles in "$logFolders"/*
+		for logFilename in $logFolders/*.txt
 		do
-			echo $logFiles
+			echo $logFilename
+			sed -n "/$logBreak/,/$logEnd/{/$logBreak/b;/$logEnd/b;p}" $logFilename >> $logFolders/summary
+			grep -s "$logErr" $logFilename >> $logFolders/summary
 		done
 	done
+
+return 0
 }
 
 echo "Enter device password:"
@@ -49,7 +55,7 @@ else
 	for e in "${boardIP[@]}"
 	do
 		initVIP=$(echo "$e" | awk '{printf $4}')
-		board=$(echo "$e" | awk '{printf $4}')
+		board=$(echo "$e" | awk '{printf $1}')
 		if [ "$initVIP" != "[VLAN" ]; then
 			echo "Running get_logs on $board."
 			./get_logs $initVIP $pw $board $mkdate
