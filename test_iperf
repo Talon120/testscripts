@@ -36,7 +36,7 @@ puts "$test\n"
 # Begin Server Commands
 #
 
-eval spawn ssh -o PubkeyAuthentication=no $vaddrS
+eval spawn ssh -o PubkeyAuthentication=no odroid@$vaddrS
 expect {
         "(yes/no)" { send "yes\r"; exp_continue }
         "password:"
@@ -82,7 +82,7 @@ sleep 2
 # Begin Client Commands
 #
 
-eval spawn ssh -o PubkeyAuthentication=no $vaddrC
+eval spawn ssh -o PubkeyAuthentication=no odroid@$vaddrC
 expect {
 	"(yes/no)" { send "yes\r"; exp_continue}
 	"password:"
