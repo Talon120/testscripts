@@ -27,9 +27,11 @@ expect {
 send -- "$pw\r"
 
 expect -ex $prompt
-send -- "echo 'y' | sudo apt-get update\r"
+send -- "sudo dpkg --configure -a\r"
 expect -exact "password for"
 send -- "$pw\r"
+expect -ex $prompt
+send -- "echo 'y' | sudo apt-get update\r"
 expect -ex $prompt
 send -- "echo 'y' | sudo apt-get install git make expect\r"
 expect -ex $prompt
