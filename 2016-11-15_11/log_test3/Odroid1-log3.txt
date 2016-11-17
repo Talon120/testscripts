@@ -1,0 +1,49 @@
+iperf 3.1
+Linux odroid 3.10.80-131 #1 SMP PREEMPT Thu Oct 15 19:53:29 BRT 2015 armv7l
+Time: Thu, 27 Oct 2016 22:05:27 GMT
+Connecting to host 192.168.1.6, port 3344
+      Cookie: odroid.1477605927.532233.4bb70692497
+      TCP MSS: 22016 (default)
+[  5] local 192.168.1.6 port 48330 connected to 192.168.1.6 port 3344
+Starting Test: protocol: TCP, 1 streams, 131072 byte blocks, omitting 0 seconds, 300 second test
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  5]   0.00-10.00  sec  4.39 GBytes  3.77 Gbits/sec    0   1.94 MBytes       
+[  5]  10.00-20.00  sec  4.86 GBytes  4.17 Gbits/sec    0   2.19 MBytes       
+[  5]  20.00-30.00  sec  4.84 GBytes  4.16 Gbits/sec    0   1.37 MBytes       
+[  5]  30.00-40.00  sec  4.62 GBytes  3.97 Gbits/sec    0   1.37 MBytes       
+[  5]  40.00-50.00  sec  4.55 GBytes  3.91 Gbits/sec    0   1.50 MBytes       
+[  5]  50.00-60.00  sec  4.60 GBytes  3.95 Gbits/sec    0   2.12 MBytes       
+[  5]  60.00-70.00  sec  4.59 GBytes  3.95 Gbits/sec    0   2.12 MBytes       
+[  5]  70.00-80.00  sec  4.30 GBytes  3.69 Gbits/sec    0   2.12 MBytes       
+[  5]  80.00-90.00  sec  4.67 GBytes  4.01 Gbits/sec    0   2.31 MBytes       
+[  5]  90.00-100.00 sec  4.83 GBytes  4.15 Gbits/sec    0   2.31 MBytes       
+[  5] 100.00-110.00 sec  4.58 GBytes  3.94 Gbits/sec    0   2.31 MBytes       
+[  5] 110.00-120.00 sec  4.59 GBytes  3.94 Gbits/sec    0   2.31 MBytes       
+[  5] 120.00-130.00 sec  4.59 GBytes  3.94 Gbits/sec    0   2.31 MBytes       
+[  5] 130.00-140.00 sec  4.79 GBytes  4.11 Gbits/sec    0   2.31 MBytes       
+[  5] 140.00-150.00 sec  5.06 GBytes  4.35 Gbits/sec    0    639 KBytes       
+[  5] 150.00-160.00 sec  5.07 GBytes  4.35 Gbits/sec    0    831 KBytes       
+[  5] 160.00-170.00 sec  4.76 GBytes  4.09 Gbits/sec    0    959 KBytes       
+[  5] 170.00-180.00 sec  4.62 GBytes  3.97 Gbits/sec    0    959 KBytes       
+[  5] 180.00-190.00 sec  5.08 GBytes  4.36 Gbits/sec    0    639 KBytes       
+[  5] 190.00-200.00 sec  4.97 GBytes  4.27 Gbits/sec    0    831 KBytes       
+[  5] 200.00-210.00 sec  4.94 GBytes  4.24 Gbits/sec    0    831 KBytes       
+[  5] 210.00-220.00 sec  4.77 GBytes  4.09 Gbits/sec    0   1.19 MBytes       
+[  5] 220.00-230.00 sec  4.99 GBytes  4.29 Gbits/sec    4    575 KBytes       
+[  5] 230.00-240.00 sec  5.07 GBytes  4.35 Gbits/sec    0    639 KBytes       
+[  5] 240.00-250.00 sec  5.07 GBytes  4.35 Gbits/sec    0    575 KBytes       
+[  5] 250.00-260.00 sec  4.78 GBytes  4.11 Gbits/sec    0    575 KBytes       
+[  5] 260.00-270.00 sec  4.76 GBytes  4.09 Gbits/sec    0    639 KBytes       
+[  5] 270.00-280.00 sec  4.60 GBytes  3.95 Gbits/sec    0    767 KBytes       
+[  5] 280.00-290.00 sec  4.59 GBytes  3.94 Gbits/sec    0    767 KBytes       
+[  5] 290.00-300.00 sec  4.84 GBytes  4.16 Gbits/sec    0    831 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+Test Complete. Summary Results:
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  5]   0.00-300.00 sec   143 GBytes  4.09 Gbits/sec    4             sender
+[  5]   0.00-300.00 sec   143 GBytes  4.09 Gbits/sec                  receiver
+CPU Utilization: local/sender 84.3% (1.4%u/82.9%s), remote/receiver 98.1% (2.6%u/95.6%s)
+snd_tcp_congestion reno
+rcv_tcp_congestion reno
+
+iperf Done.

@@ -1,0 +1,12 @@
+Test Complete. Summary Results:
+[ ID] Interval           Transfer     Bandwidth       Jitter    Lost/Total Datagrams
+[  5]   0.00-60.00  sec  7.50 MBytes  1.05 Mbits/sec  0.028 ms  0/960 (0%)  
+[  5] Sent 960 datagrams
+CPU Utilization: local/sender 2.8% (0.5%u/2.3%s), remote/receiver 0.0% (0.0%u/0.0%s)
+
+Test Complete. Summary Results:
+[ ID] Interval           Transfer     Bandwidth       Jitter    Lost/Total Datagrams
+[  5]   0.00-60.00  sec  7.50 MBytes  1.05 Mbits/sec  0.028 ms  0/960 (0%)
+[  5] Sent 960 datagrams
+CPU Utilization: local/sender 2.8% (0.5%u/2.3%s), remote/receiver 0.0% (0.0%u/0.0%s)
+

@@ -3,7 +3,7 @@
 # Program name:	get_logs.sh
 # Created by:	Talon Jones
 # Created:	3 Nov. 2016
-# Updated:	11 Nov. 2016
+# Updated:	16 Nov. 2016
 # Purpose:	Retrieve any iperf log files from boards listed in ipconfig.txt.
 # Usage:	./get_logs.sh {board}
 
@@ -38,6 +38,7 @@ if [ -n "$board" ]; then
 		mkdir -p $mkdate/log_test1/
         	mkdir -p $mkdate/log_test2/
 	        mkdir -p $mkdate/log_test3/
+		mkdir -p $mkdate/servers/
 		echo "Running get_logs on $board."
 		./get_logs $initVIP $pw $board $mkdate
 		echo "Retrieved logs from $board."
@@ -51,6 +52,7 @@ else
 	mkdir -p $mkdate/log_test1/
 	mkdir -p $mkdate/log_test2/
 	mkdir -p $mkdate/log_test3/
+	mkdir -p $mkdate/servers/
 
 	for e in "${boardIP[@]}"
 	do
