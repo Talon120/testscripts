@@ -18,13 +18,16 @@ set ethnet "eth0"
 set usbnet "enx"
 set lanGW "254"
 set vlanGW "1"
+set sshkey 1
 
-eval spawn ssh -o PubkeyAuthentication=no odroid@$addr
-expect {
-	"(yes/no)" { send "yes\r"; exp_continue }
-	"password:"
+while {$sshkey == 1} {
+	eval spawn ssh -o PubkeyAuthentication=no odroid@$addr
+	expect {
+		"(yes/no)" { send "yes\r"; exp_continue }
+		"password:" { send "$pw\r"; set sshkey 0; break }
+		"Host key verification failed" { ssh-keygen -R $addr }
+	}
 }
-send -- "$pw\r"
 
 expect -ex $prompt
 send -- "sudo dpkg --configure -a\r"
