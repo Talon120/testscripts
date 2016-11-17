@@ -20,6 +20,7 @@ logParse() {
 		for logFilename in $logFolders/*.txt
 		do
 			echo $logFilename
+			echo -e "- - - $logFilename - - -\n" >> $logFolders/summary
 			sed -n "/$logBreak/,/$logEnd/{/$logBreak/b;/$logEnd/b;p}" $logFilename >> $logFolders/summary
 			grep -s "$logErr" $logFilename >> $logFolders/summary
 		done
