@@ -1,9 +1,9 @@
 iperf 3.1
 Linux odroid 3.10.80-131 #1 SMP PREEMPT Thu Oct 15 19:53:29 BRT 2015 armv7l
-Time: Mon, 24 Oct 2016 23:22:04 GMT
+Time: Thu, 03 Nov 2016 18:25:00 GMT
 Connecting to host 192.168.1.6, port 3344
-      Cookie: odroid.1477351324.310433.002f25be2a6
-[  5] local 192.168.1.6 port 33185 connected to 192.168.1.6 port 3344
+      Cookie: odroid.1478197500.572748.57bb8a7a3eb
+[  5] local 192.168.1.6 port 60074 connected to 192.168.1.6 port 3344
 Starting Test: protocol: UDP, 1 streams, 8192 byte blocks, omitting 0 seconds, 60 second test
 [ ID] Interval           Transfer     Bandwidth       Total Datagrams
 [  5]   0.00-1.00   sec   128 KBytes  1.05 Mbits/sec  16  
@@ -69,8 +69,17 @@ Starting Test: protocol: UDP, 1 streams, 8192 byte blocks, omitting 0 seconds, 6
 - - - - - - - - - - - - - - - - - - - - - - - - -
 Test Complete. Summary Results:
 [ ID] Interval           Transfer     Bandwidth       Jitter    Lost/Total Datagrams
-[  5]   0.00-60.00  sec  7.50 MBytes  1.05 Mbits/sec  0.013 ms  0/960 (0%)  
+[  5]   0.00-60.00  sec  7.50 MBytes  1.05 Mbits/sec  0.028 ms  0/960 (0%)  
 [  5] Sent 960 datagrams
-CPU Utilization: local/sender 2.6% (0.0%u/2.6%s), remote/receiver 0.1% (0.0%u/0.1%s)
+CPU Utilization: local/sender 2.8% (0.5%u/2.3%s), remote/receiver 0.0% (0.0%u/0.0%s)
+
+iperf Done.
+
+- - - - - - - - - - - - - - - - - - - - - - - - -
+Test Complete. Summary Results:
+[ ID] Interval           Transfer     Bandwidth       Jitter    Lost/Total Datagrams
+[  5]   0.00-60.00  sec  7.50 MBytes  1.05 Mbits/sec  0.028 ms  0/960 (0%)
+[  5] Sent 960 datagrams
+CPU Utilization: local/sender 2.8% (0.5%u/2.3%s), remote/receiver 0.0% (0.0%u/0.0%s)
 
 iperf Done.

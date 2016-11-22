@@ -11,6 +11,7 @@ filename="ipconfig.txt"
 board=$1
 mkdate=$(date +"%F_%H")
 logBreak="- - - - - - - - - - - - - - - - - - - - - - - - -"
+logServ="Accepted connection"
 logEnd="iperf Done."
 logErr="iperf3: error"
 
@@ -20,8 +21,13 @@ logParse() {
 		for logFilename in $logFolders/*.txt
 		do
 			echo $logFilename
+			echo $logFolders
 			echo -e "- - - $logFilename - - -\n" >> $logFolders/summary
-			sed -n "/$logBreak/,/$logEnd/{/$logBreak/b;/$logEnd/b;p}" $logFilename >> $logFolders/summary
+			if [[ "$logFolders" == *servers ]]; then
+				sed -n "/$logBreak/,/$logServ/p" $logFilename >> $logFolders/summary
+			else
+				sed -n "/$logBreak/,/$logEnd/{/$logBreak/b;/$logEnd/b;p}" $logFilename >> $logFolders/summary
+			fi
 			grep -s "$logErr" $logFilename >> $logFolders/summary
 		done
 	done

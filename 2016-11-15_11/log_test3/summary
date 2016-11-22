@@ -1,8 +1,0 @@
-Test Complete. Summary Results:
-[ ID] Interval           Transfer     Bandwidth       Retr
-[  5]   0.00-300.00 sec   143 GBytes  4.09 Gbits/sec    4             sender
-[  5]   0.00-300.00 sec   143 GBytes  4.09 Gbits/sec                  receiver
-CPU Utilization: local/sender 84.3% (1.4%u/82.9%s), remote/receiver 98.1% (2.6%u/95.6%s)
-snd_tcp_congestion reno
-rcv_tcp_congestion reno
-

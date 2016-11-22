@@ -19,28 +19,34 @@ set log3 "log_test3"
 set slog "nohup.out"
 
 
-eval spawn scp odroid@$addr:$log1 $logpath/$log1/$board-log1.txt
+eval spawn rsync --info=progress2 --remove-source-files odroid@$addr:$log1 $logpath/$log1/$board-log1.txt
 expect {
 	"(yes/no)" { send "yes\r"; exp_continue }
 	"password:" { send -- "$pw\r" }
 }
 
-eval spawn scp odroid@$addr:$log2 $logpath/$log2/$board-log2.txt
-expect {
-        "(yes/no)" { send "yes\r"; exp_continue }
-        "password:" { send -- "$pw\r" }
+expect -ex "100%" {
+	eval spawn rsync --info=progress2 --remove-source-files odroid@$addr:$log2 $logpath/$log2/$board-log2.txt
+	expect {
+	        "(yes/no)" { send "yes\r"; exp_continue }
+	        "password:" { send -- "$pw\r" }
+	}
 }
 
-eval spawn scp odroid@$addr:$log3 $logpath/$log3/$board-log3.txt
-expect {
-        "(yes/no)" { send "yes\r"; exp_continue }
-        "password:" { send -- "$pw\r" }
+expect -ex "100%" {
+	eval spawn rsync --info=progress2 --remove-source-files odroid@$addr:$log3 $logpath/$log3/$board-log3.txt
+	expect {
+	        "(yes/no)" { send "yes\r"; exp_continue }
+	        "password:" { send -- "$pw\r" }
+	}
 }
 
-eval spawn scp odroid@$addr:$slog $logpath/servers/$board-server.txt
-expect {
-        "(yes/no)" { send "yes\r"; exp_continue }
-        "password:" { send -- "$pw\r" }
+expect -ex "100%" {
+	eval spawn rsync --info=progress2 --remove-source-files odroid@$addr:$slog $logpath/servers/$board-server.txt
+	expect {
+	        "(yes/no)" { send "yes\r"; exp_continue }
+	        "password:" { send -- "$pw\r" }
+	}
 }
 
 sleep 5
