@@ -18,13 +18,13 @@ set vaddrS [lindex $argv 6]
 set prompt "$"
 
 if {$test == "1"} {
-	set test "iperf3 -c $addrS -p 3344 -V -u -b 100G -w 1M -t $dur --logfile log_test1"
+	set test "iperf3 -c $addrS -p 3344 -V -u -b 100G -w 10M -t $dur --logfile log_test1"
 	puts "\n1s UDP tests for $dur seconds. Log file: log_test1\n"
 } elseif {$test == "2"} {
-	set test "iperf3 -c $addrS -p 3344 -V -w 1M -t $dur --logfile log_test2"
+	set test "iperf3 -c $addrS -p 3344 -V -w 10M -t $dur --logfile log_test2"
 	puts "\n1s TCP tests for $dur seconds. Log file: log_test2\n"
 } elseif {$test == "3"} {
-	set test "iperf3 -c $addrS -p 3344 -V -w 1M -t $dur -i 10 --logfile log_test3"
+	set test "iperf3 -c $addrS -p 3344 -V -w 10M -t $dur -i 10 --logfile log_test3"
 	puts "\nPeriodic TCP tests every 10s for $dur seconds. Log file: log_test3\n"
 } else {
 	puts "-----No/invalid test specified. Exiting now.-----\n"
@@ -49,7 +49,7 @@ expect -ex $prompt {
 	send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
 
 	send -- "echo 'Starting up Iperf server.'\r"
-	send -- "nohup iperf3 -p 3344 -s &\r"
+	send -- "nohup iperf3 -p 3344 -s -B $addrS &\r"
 	sleep 1
 	send -- "disown\r"
 
@@ -61,7 +61,7 @@ expect -ex $prompt {
 
 	send -- "echo 'Iperf server logfile not found. Restarting server.'\r"
 	send -- "kill \$(ps -aux | grep 'iperf3' | grep -v 'grep' | awk '\{printf \$2\}')\r"
-	send -- "nohup iperf3 -p 3344 -s &\r"
+	send -- "nohup iperf3 -p 3344 -s -B $addrS &\r"
 	sleep 1
 	send -- "disown\r"
 
