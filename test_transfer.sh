@@ -33,7 +33,7 @@ echo -e "Server board Internal IP: $boardSLanIP     VLAN IP: $boardSVlanIP"
 echo -e "\nName of file to transfer: [1GB, 512MB, 200MB, 100MB, 50MB, 20MB, 10MB, 5MB]"
 read transferFile
 
-if [[ $(ls | grep "$transerFile.zip") ]]; then
+if [[ $(ls | grep "$transferFile.zip") ]]; then
 	echo -e "\n\nControl file found on server.\n"
 else
 	echo -e "\n\nControl file not found. Downloading now.\n"
@@ -42,6 +42,7 @@ fi
 
 ./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP
 
+echo -e "\nChecking file differences:\n"
 diff "$transferFile.zip" "$transferFile.zip.new"
 ret=$?
 
