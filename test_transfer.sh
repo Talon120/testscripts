@@ -45,7 +45,7 @@ read numloop
 
 while [ $numloop -gt 0 ]; do
 
-	echo -e "\n\nRunning transfer...\n"
+	echo -e "\nRunning transfer..."
 
 	./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP
 
