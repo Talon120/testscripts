@@ -40,15 +40,25 @@ else
 	wget "download.thinkbroadband.com/$transferFile.zip"
 fi
 
-./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP
+echo -e "Number of times to loop: "
+read numloop
 
-echo -e "\nChecking file differences:\n"
-diff "$transferFile.zip" "$transferFile.zip.new"
-ret=$?
+while [ $numloop -gt 0 ]; do
 
-if [[ $ret -eq 0 ]]; then
-	echo -e "No differences found between:\nControl File:\t$transferFile.zip\nTransfered File:\t$transferFile.zip.new\n"
-else
-	echo "Error: diff command failed with filenames given: $transferFile.zip and $transferFile.zip.new"
-fi
+	echo -e "\n\nRunning transfer...\n"
 
+	./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP
+
+	echo -e "\nChecking file differences:\n"
+	diff "$transferFile.zip" "$transferFile.zip.new"
+	ret=$?
+
+	if [[ $ret -eq 0 ]]; then
+		echo -e "No differences found between:\nControl File:\t$transferFile.zip\nTransfered File:\t$transferFile.zip.new\n"
+	else
+		echo "Error: diff command failed with filenames given: $transferFile.zip and $transferFile.zip.new"
+	fi
+
+	numloop=$[$numloop-1]
+
+done
