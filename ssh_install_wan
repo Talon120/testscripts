@@ -1,0 +1,84 @@
+#!/usr/bin/expect -f
+
+# Program name:	ssh_install_wan
+# Created by:	Talon Jones
+# Created:	10 Oct. 2016
+# Updated:	4 Nov. 2016
+# Purpose:	Expect script to ssh into [IP] and install iPerf and all dependent libraries.
+# Note:		iPerf directory will be cloned to board's home directory.
+# Usage:	./ssh_install_wan [IP] [NEW VLANIP] [NEW LANIP] [PW]
+
+set timeout -1
+set addr [lindex $argv 0]
+set vaddr [lindex $argv 1]
+set laddr [lindex $argv 2]
+set pw [lindex $argv 3]
+set prompt "$"
+set ethnet "eth0"
+set usbnet "enx"
+set lanGW "1"
+set vlanGW "1"
+set sshkey 1
+
+while {$sshkey == 1} {
+	eval spawn ssh -o PubkeyAuthentication=no odroid@$addr
+	expect {
+		"(yes/no)" { send "yes\r"; exp_continue }
+		"password:" { send "$pw\r"; set sshkey 0; break }
+		"Host key verification failed" { ssh-keygen -R $addr }
+	}
+}
+
+expect -ex $prompt
+send -- "sudo dpkg --configure -a\r"
+expect -exact "password for"
+send -- "$pw\r"
+expect -ex $prompt
+send -- "echo 'y' | sudo apt-get update\r"
+expect -ex $prompt
+send -- "echo 'y' | sudo apt-get install git make expect\r"
+expect -ex $prompt
+send -- "git clone https://github.com/esnet/iperf\r"
+expect -ex $prompt
+send -- "cd iperf\r"
+expect -ex $prompt
+send -- "sudo ./configure\r"
+expect -ex $prompt
+send -- "sudo make\r"
+expect -ex $prompt
+send -- "sudo make install\r"
+expect -ex $prompt
+send -- "echo 'y' | sudo apt-get install libz1 libbz2-1.0 libstdc++6\r"
+expect -ex $prompt
+send -- "sudo ldconfig\r"
+
+expect -ex $prompt {
+	send -- "usbn=\$(ifconfig | grep ^$usbnet | awk '{printf \$1}')\r"
+	send -- "if \[\[ -n \"\$usbn\" \]\]; then\r"
+		send -- "conf=\$(grep \"\$usbn\" /etc/network/interfaces)\r"
+		send -- "greprc=\$?\r"
+		send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
+			send -- "gw=$vaddr\r"
+			send -- "echo \"\nauto \$usbn\niface \$usbn inet static\naddress $vaddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.$vlanGW\ndns-nameservers 8.8.8.8\" | sudo tee -a /etc/network/interfaces\r"
+		send -- "else\r"
+			send -- "sudo sed '/iface \$usbn inet static/!b;n;caddress $vaddr' /etc/network/interfaces\r"
+		send -- "fi\r"
+	send -- "fi\r"
+
+	send -- "conf=\$(grep '$ethnet' /etc/network/interfaces)\r"
+	send -- "greprc=\$?\r"
+	send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
+		send -- "gw=$laddr\r"
+		send -- "echo \"\nauto $ethnet\niface $ethnet inet static\naddress $laddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.$lanGW\ndns-nameservers 8.8.8.8\" | sudo tee -a /etc/network/interfaces\r"
+	send -- "else\r"
+		send -- "sudo sed '/iface $ethnet inet static/!b;n;caddress $laddr' /etc/network/interfaces\r"
+	send -- "fi\r"
+}
+
+sleep 1
+expect -ex $prompt
+send -- "sudo reboot\r"
+sleep 1
+#interact
+exit
+
