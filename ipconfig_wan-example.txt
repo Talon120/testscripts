@@ -1,0 +1,5 @@
+[Board] [Internal IP] [VLAN IP] [INIT IP]
+Odroid1 192.168.1.7 192.168.1.7 192.168.1.7
+Odroid2 192.168.1.4 192.168.1.4 192.168.1.4
+
+*NOTE: Tests will require a file named 'ipconfig.txt'*

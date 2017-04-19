@@ -7,7 +7,7 @@
 # Purpose:	Automate ssh_install_wan for every board/IP listed in [filename].
 # Usage:	./ssh_install_wan.sh {board}
 
-filename="ipconfig.txt"
+filename="ipconfig_wan.txt"
 
 echo "Enter device password:"
 read -s pw
