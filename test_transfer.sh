@@ -10,6 +10,12 @@ filename="ipconfig.txt"
 board="Odroid"
 
 echo "This test will transfer the designated file from: Server->Board1->Board2->Server"
+echo "Enter Server IP: "
+read serverIP
+echo "Enter Server Username: "
+read serverUser
+echo "Enter Server Password: "
+read serverPass
 echo "Enter first board #: "
 read boardC
 echo "Enter second board #: "
@@ -47,7 +53,7 @@ while [ $numloop -gt 0 ]; do
 
 	echo -e "\nRunning transfer..."
 
-	./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP
+	./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP $serverUser $serverPass $serverIP
 
 	echo -e "\nChecking file differences:\n"
 	diff "$transferFile.zip" "$transferFile.zip.new"

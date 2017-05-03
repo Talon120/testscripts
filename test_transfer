@@ -1,11 +1,10 @@
 #!/usr/bin/expect -f
 
-# Program name:	get_logs
+# Program name:	test_transfer
 # Created by:	Talon Jones
 # Created:	29 Oct. 2016
-# Updated:	16 Nov. 2016
 # Purpose:	Retrieve any iperf log files from boards listed in ipconfig.txt.
-# Usage:	./test_transfer [LANfirst] [LANsecond] [PW] [File] [VLANfirst] [VLANsecond]
+# Usage:	./test_transfer [LANfirst] [LANsecond] [PW] [File] [VLANfirst] [VLANsecond] [serverUser] [serverPass] [serverIP]
 
 set timeout -1
 set addr1 [lindex $argv 0]
@@ -14,6 +13,9 @@ set pw [lindex $argv 2]
 set filename [lindex $argv 3]
 set vaddr1 [lindex $argv 4]
 set vaddr2 [lindex $argv 5]
+set serverUser [lindex $argv 6]
+set serverPass [lindex $argv 7]
+set serverIP [lindex $argv 8]
 set prompt "$"
 set dlurl "download.thinkbroadband.com/"
 
@@ -39,16 +41,20 @@ expect -ex "100%" {
 	send -- "logout\r"
 }
 
-# Transfer filename from second board to Server.
+# Transfer filename-2 from second board to server.
+eval spawn ssh -o PubkeyAuthentication=no odroid@$vaddr2
+expect {
+	"(yes/no)" { send "yes\r"; exp_continue }
+	"password:" { send -- "$pw\r" }
+}
 expect -ex $prompt
-puts "Transferring $filename from second board to Server."
-eval spawn rsync --info=progress2 --remove-source-files odroid@$vaddr2:$filename-2 $filename.new
+send -- "rsync --info=progress2 --remove-source-files $filename-2 $serverUser@$serverIP:$filename.new\r"
 expect {
         "(yes/no)" { send "yes\r"; exp_continue }
-        "password:" { send -- "$pw\r" }
+        "password:" { send -- "$serverPass\r" }
 }
 expect -ex "100%" {
-	puts "Transfer complete."
+	send -- "logout\r"
 }
 
 expect -ex $prompt {

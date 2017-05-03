@@ -1,0 +1,32 @@
+#!/usr/bin/expect -f
+
+# Program name:	ping_test
+# Created by:	Talon Jones
+# Created:	21 April 2017
+# Purpose:	Run or retrieve logs for the ping_test test. Running will direct the board to continuously ping a set IP. Retrieving will count the number of 5 sequential missed pings and log as a disconnect; script returns the number of disconnects.
+# Usage:	./ping_test [boardIP] [pw] [serverIP] [dur]
+
+set timeout -1
+set param [lindex $argv 0]
+set boardIP [lindex $argv 1]
+set pw [lindex $argv 2]
+set serverIP [lindex $argv 3]
+set dur [lindex $argv 4]
+
+
+set prompt "$"
+
+# Get filename from dlurl for first board.
+eval spawn ssh -o PubkeyAuthentication=no odroid@$boardIP
+expect {
+	"(yes/no)" { send "yes\r"; exp_continue }
+        "password:" { send -- "$pw\r" }
+}
+expect -ex $prompt
+
+send -- "ping -c $dur $serverIP > ping_test.txt &\r"
+
+expect -ex $prompt
+send -- "logout\r"
+
+exit
