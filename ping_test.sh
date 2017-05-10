@@ -79,7 +79,7 @@ else
 		count=0
 		dcCount=0
 		echo "Collecting logs."
-		if [ "$boardData" != "IP]" ]; then
+		if [ "$board" != "[Board]" ]; then
 			/usr/bin/expect -c "spawn rsync --info=progress2 --remove-source-files odroid@$boardIP:ping_test.txt pinglogs/$mkdate/$board-ping-log.txt ; expect \"password:\" { send -- \"$pw\r\" } ; expect eof"
                 	echo "Log retrieved from $board."
 			grep 'icmp_seq=' pinglogs/$mkdate/$board-ping-log.txt | sed 's/.*icmp_seq=\([0-9]*\).*/\1/' > $board-seq.txt
