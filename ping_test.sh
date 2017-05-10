@@ -82,7 +82,7 @@ else
 		if [ "$boardData" != "IP]" ]; then
 			/usr/bin/expect -c "spawn rsync --info=progress2 --remove-source-files odroid@$boardIP:ping_test.txt pinglogs/$mkdate/$board-ping-log.txt ; expect \"password:\" { send -- \"$pw\r\" } ; expect eof"
                 	echo "Log retrieved from $board."
-			grep 'icmp_seq=' $board-ping-log.txt | sed 's/.*icmp_seq=\([0-9]*\).*/\1/' > $board-seq.txt
+			grep 'icmp_seq=' pinglogs/$mkdate/$board-ping-log.txt | sed 's/.*icmp_seq=\([0-9]*\).*/\1/' > $board-seq.txt
 
 			readarray -t seqN < $board-seq.txt
 			for e in ${seqN[@]}
