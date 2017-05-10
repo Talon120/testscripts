@@ -7,11 +7,10 @@
 # Usage:	./ping_test [boardIP] [pw] [serverIP] [dur]
 
 set timeout -1
-set param [lindex $argv 0]
-set boardIP [lindex $argv 1]
-set pw [lindex $argv 2]
-set serverIP [lindex $argv 3]
-set dur [lindex $argv 4]
+set boardIP [lindex $argv 0]
+set pw [lindex $argv 1]
+set serverIP [lindex $argv 2]
+set dur [lindex $argv 3]
 
 
 set prompt "$"

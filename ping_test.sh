@@ -24,7 +24,7 @@ if [ -n "$board" ]; then
         boardIP=$(echo "$e" | awk '{printf $3}')
 	if [ -n "$boardIP" ]; then
 		echo "Running ping_test on $board."
-                ./ping_test t $boardIP $pw $serverIP $dur
+                ./ping_test $boardIP $pw $serverIP $dur
                 echo "Running ping_test on $board for $dur seconds."
 		sleep $dur
 		echo "Retrieving logs from $board."
