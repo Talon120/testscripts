@@ -8,6 +8,7 @@
 
 filename="ipconfig.txt"
 mkdate=$(date +"%F_%H")
+mkdir -p pinglogs/$mkdate
 
 echo "Enter device password:"
 read -s pw
