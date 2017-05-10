@@ -42,12 +42,12 @@ if [ -n "$board" ]; then
 	e=$(grep -w $board $filename)
 	initVIP=$(echo "$e" | awk '{printf $4}')
 	if [ -n "$initVIP" ]; then
-		mkdir -p $mkdate/log_test1/
-        	mkdir -p $mkdate/log_test2/
-	        mkdir -p $mkdate/log_test3/
-		mkdir -p $mkdate/servers/
+		mkdir -p iperflogs/$mkdate/log_test1/
+        	mkdir -p iperflogs/$mkdate/log_test2/
+	        mkdir -p iperflogs/$mkdate/log_test3/
+		mkdir -p iperflogs/$mkdate/servers/
 		echo "Running get_logs on $board."
-		./get_logs $initVIP $pw $board $mkdate
+		./get_logs $initVIP $pw $board iperflogs/$mkdate
 		echo "Retrieved logs from $board."
 		logParse
 	else
@@ -56,10 +56,10 @@ if [ -n "$board" ]; then
 
 else
 	readarray -t boardIP < $filename
-	mkdir -p $mkdate/log_test1/
-	mkdir -p $mkdate/log_test2/
-	mkdir -p $mkdate/log_test3/
-	mkdir -p $mkdate/servers/
+	mkdir -p iperflogs/$mkdate/log_test1/
+	mkdir -p iperflogs/$mkdate/log_test2/
+	mkdir -p iperflogs/$mkdate/log_test3/
+	mkdir -p iperflogs/$mkdate/servers/
 
 	for e in "${boardIP[@]}"
 	do
@@ -67,7 +67,7 @@ else
 		board=$(echo "$e" | awk '{printf $1}')
 		if [ "$initVIP" != "[VLAN" ]; then
 			echo "Running get_logs on $board."
-			./get_logs $initVIP $pw $board $mkdate
+			./get_logs $initVIP $pw $board iperflogs/$mkdate
 			echo "Retrieved logs from $board."
 		fi
 	done
