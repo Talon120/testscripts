@@ -98,6 +98,7 @@ else
 			fi
 
 			echo "$board: $dcCount disconnects over $dur seconds" >> pinglogs/$mkdate/disconnect-log.txt
+			echo -e "\t" $(grep 'packets transmitted' pinglogs/$mkdate/$board-ping-log.txt) >> pinglogs/$mkdate/disconnect-log.txt
 			rm -f $board-seq.txt
 		fi
 	done
