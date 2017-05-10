@@ -23,8 +23,10 @@ expect {
         "password:" { send -- "$pw\r" }
 }
 expect -ex $prompt
-
 send -- "ping -c $dur $serverIP > ping_test.txt &\r"
+
+expect -ex $prompt
+send -- "disown\r"
 
 expect -ex $prompt
 send -- "logout\r"

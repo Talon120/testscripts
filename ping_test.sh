@@ -11,25 +11,27 @@ filename="ipconfig.txt"
 echo "Enter device password:"
 read -s pw
 echo "Enter server IP:"
-read -s serverIP
+read serverIP
 echo "Enter test duration (seconds):"
-read -s dur
+read dur
 
 board=$1
 
 if [ -n "$board" ]; then
 	e=$(grep -w $board $filename)
         boardIP=$(echo "$e" | awk '{printf $3}')
-	if [ -n "$initVIP" ]; then
+	if [ -n "$boardIP" ]; then
 		echo "Running ping_test on $board."
                 ./ping_test t $boardIP $pw $serverIP $dur
                 echo "Running ping_test on $board for $dur seconds."
 		sleep $dur
 		echo "Retrieving logs from $board."
-		rsync --info=progress2 --remove-sourcefiles odroid@$boardIP:ping_test.txt $board-ping-log.txt
+		/usr/bin/expect -c "spawn rsync --info=progress2 --remove-source-files odroid@$boardIP:ping_test.txt $board-ping-log.txt ; expect \"password:\" { send -- \"$pw\r\" } ; expect eof"
                 echo "Log retrieved from $board."
 		grep 'icmp_seq=' $board-ping-log.txt | sed 's/.*icmp_seq=\([0-9]*\).*/\1/' > $board-seq.txt
 
+		count=0
+		dcCount=0
 		readarray -t seqN < $board-seq.txt
 		for e in ${seqN[@]}
 		do
@@ -58,7 +60,7 @@ else
 	do
 		boardIP=$(echo "$e" | awk '{printf $3}')
 		board=$(echo "$e" | awk '{printf $1}')
-		if [ "$boardData" != "[Internal" ]; then
+		if [ "$board" != "[Board]" ]; then
 			echo "Running ping_test on $board."
                 	./ping_test $boardIP $pw $serverIP $dur
                 	echo "Running ping_test on $board for $dur seconds."
@@ -76,7 +78,7 @@ else
 		dcCount=0
 		echo "Collecting logs."
 		if [ "$boardData" != "IP]" ]; then
-                	rsync --info=progress2 --remove-sourcefiles odroid@$boardIP:ping_test.txt $board-ping-log.txt
+			/usr/bin/expect -c "spawn rsync --info=progress2 --remove-source-files odroid@$boardIP:ping_test.txt $board-ping-log.txt ; expect \"password:\" { send -- \"$pw\r\" } ; expect eof"
                 	echo "Log retrieved from $board."
 			grep 'icmp_seq=' $board-ping-log.txt | sed 's/.*icmp_seq=\([0-9]*\).*/\1/' > $board-seq.txt
 
