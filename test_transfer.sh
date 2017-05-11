@@ -7,6 +7,7 @@
 
 
 filename="ipconfig.txt"
+mkdate=$(date +"%F_%H")
 board="Odroid"
 
 echo "This test will transfer the designated file from: Server->Board1->Board2->Server"
@@ -49,6 +50,8 @@ fi
 echo -e "Number of times to loop: "
 read numloop
 
+echo -e "\n\n$mkdate\n" >> transferlog.txt
+
 while [ $numloop -gt 0 ]; do
 
 	echo -e "\nRunning transfer..."
@@ -63,9 +66,9 @@ while [ $numloop -gt 0 ]; do
 	ret=$?
 
 	if [[ $ret -eq 0 ]]; then
-		echo -e "No differences found between:\nControl File:\t$transferFile.zip\nTransfered File:\t$transferFile.zip.new\n"
+		echo -e "No differences found between:\nControl File:\t$transferFile.zip\nTransfered File:\t$transferFile.zip.new\n" | tee transferlog.txt
 	else
-		echo "Error: diff command failed with filenames given: $transferFile.zip and $transferFile.zip.new"
+		echo "Error: diff command failed with filenames given: $transferFile.zip and $transferFile.zip.new" | tee transferlog.txt
 	fi
 
 	numloop=$[$numloop-1]
