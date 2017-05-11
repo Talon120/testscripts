@@ -15,13 +15,13 @@ read serverIP
 echo "Enter Server Username: "
 read serverUser
 echo "Enter Server Password: "
-read serverPass
+read -s serverPass
 echo "Enter first board #: "
 read boardC
 echo "Enter second board #: "
 read boardS
 echo "Enter password: [Note: password needs to be the same for both boards]"
-read pw
+read -s pw
 
 boardC="$board$boardC"
 boardS="$board$boardS"
@@ -54,6 +54,9 @@ while [ $numloop -gt 0 ]; do
 	echo -e "\nRunning transfer..."
 
 	./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP $serverUser $serverPass $serverIP
+
+	echo -e "\nRelocating file."
+	mv $transferFile.new .
 
 	echo -e "\nChecking file differences:\n"
 	diff "$transferFile.zip" "$transferFile.zip.new"
