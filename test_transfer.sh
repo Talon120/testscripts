@@ -59,16 +59,16 @@ while [ $numloop -gt 0 ]; do
 	./test_transfer $boardCLanIP $boardSLanIP $pw "$transferFile.zip" $boardCVlanIP $boardSVlanIP $serverUser $serverPass $serverIP
 
 	echo -e "\nRelocating file."
-	mv $transferFile.new .
+	mv $transferFile.zip.new .
 
 	echo -e "\nChecking file differences:\n"
 	diff "$transferFile.zip" "$transferFile.zip.new"
 	ret=$?
 
 	if [[ $ret -eq 0 ]]; then
-		echo -e "No differences found between:\nControl File:\t$transferFile.zip\nTransfered File:\t$transferFile.zip.new\n" | tee transferlog.txt
+		echo -e "No differences found between:\nControl File:\t$transferFile.zip\nTransfered File:\t$transferFile.zip.new\n" >> transferlog.txt
 	else
-		echo "Error: diff command failed with filenames given: $transferFile.zip and $transferFile.zip.new" | tee transferlog.txt
+		echo "Error: diff command failed with filenames given: $transferFile.zip and $transferFile.zip.new" >> transferlog.txt
 	fi
 
 	numloop=$[$numloop-1]
