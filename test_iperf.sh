@@ -45,7 +45,8 @@ echo -e "Server board Internal IP: $boardSLanIP     VLAN IP: $boardSVlanIP"
 echo -e "\nSelect a test to run:
 1) UDP test
 2) TCP test
-3) TCP periodic test"
+3) TCP periodic test
+4) Reverse TCP test"
 read optNum
 
 echo -e "\nEnter test duration: [min]"

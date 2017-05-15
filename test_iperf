@@ -26,6 +26,9 @@ if {$test == "1"} {
 } elseif {$test == "3"} {
 	set test "iperf3 -c $addrS -p 3344 -V -w 10M -t $dur -i 10 --logfile log_test3"
 	puts "\nPeriodic TCP tests every 10s for $dur seconds. Log file: log_test3\n"
+} elseif {$test == "4"} {
+	set test "iperf3 -c $addrS -p 3344 -V -R -w 10M -t $dur --logfile log_test4"
+	puts "\n1s TCP tests for $dur seconds in reverse mode. Log file: log_test4\n"
 } else {
 	puts "-----No/invalid test specified. Exiting now.-----\n"
 	exit

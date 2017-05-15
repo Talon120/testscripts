@@ -71,6 +71,8 @@ while [ $numloop -gt 0 ]; do
 		echo "Error: diff command failed with filenames given: $transferFile.zip and $transferFile.zip.new" >> transferlog.txt
 	fi
 
+	rm -f $transferFile.zip.new
+
 	numloop=$[$numloop-1]
 
 done

@@ -72,6 +72,8 @@ else
 	echo "Sleeping for $dur seconds."
 	sleep $dur
 
+	echo $(date) >> pinglogs/$mkdate/disconnect-log.txt
+
 	for e in "${boardData[@]}"
 	do
 		boardIP=$(echo "$e" | awk '{printf $3}')
