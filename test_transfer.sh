@@ -50,7 +50,7 @@ fi
 echo -e "Number of times to loop: "
 read numloop
 
-echo -e "\n\n$mkdate\n" >> transferlog.txt
+echo -e "\n\n$mkdate\nTransfer from $boardC to $boardS to $serverIP\n" >> transferlog.txt
 
 while [ $numloop -gt 0 ]; do
 
