@@ -15,7 +15,8 @@ set laddr [lindex $argv 2]
 set pw [lindex $argv 3]
 set prompt "$"
 set ethnet "eth0"
-set usbnet "enx"
+set usbnetenx "enx"
+set usbnetusb "usbnet"
 set lanGW "254"
 set vlanGW "1"
 set sshkey 1
@@ -53,7 +54,19 @@ expect -ex $prompt
 send -- "sudo ldconfig\r"
 
 expect -ex $prompt {
-	send -- "usbn=\$(ifconfig | grep ^$usbnet | awk '{printf \$1}')\r"
+	send -- "usbn=\$(ifconfig | grep ^$usbnetenx | awk '{printf \$1}')\r"
+	send -- "if \[\[ -n \"\$usbn\" \]\]; then\r"
+		send -- "conf=\$(grep \"\$usbn\" /etc/network/interfaces)\r"
+		send -- "greprc=\$?\r"
+		send -- "if \[\[ \$greprc -eq 1 \]\]; then\r"
+			send -- "gw=$vaddr\r"
+			send -- "echo \"\nauto \$usbn\niface \$usbn inet static\naddress $vaddr\nnetmask 255.255.255.0\ngateway \$\{gw\%.\*\}.$vlanGW\ndns-nameservers 8.8.8.8\" | sudo tee -a /etc/network/interfaces\r"
+		send -- "else\r"
+			send -- "sudo sed '/iface \$usbn inet static/!b;n;caddress $vaddr' /etc/network/interfaces\r"
+		send -- "fi\r"
+	send -- "fi\r"
+
+	send -- "usbn=\$(ifconfig | grep ^$usbnetusb | awk '{printf \$1}')\r"
 	send -- "if \[\[ -n \"\$usbn\" \]\]; then\r"
 		send -- "conf=\$(grep \"\$usbn\" /etc/network/interfaces)\r"
 		send -- "greprc=\$?\r"
